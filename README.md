@@ -112,6 +112,19 @@ Docker compose up
 
 docker logs 466  (check the logs)
 
+docker stop $(docker ps -q)
+
+docker rm -f $(docker ps -aq)
+
+docker volume ls -q
+docker voulme rm $(docker volume ls -q)
+
+docker volume ls -f dangling=true
+
+docker rmi <image name>
+docker rmi $(docker images -q)
+docker images -f dangling=true
+
 
 
 
