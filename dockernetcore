@@ -1,0 +1,114 @@
+.net code docker 
+
+Commands
+ docker version
+ docker run --rm it microsoft/dotnet:2-runtime dotnet
+ docker run --rm it microsoft/dotnet:2-runtime dotnet --info (get info of dotnet core version)
+ 
+ docker registry mirror (to pull image and cache it, next time it pull it from mirror instead of from internet)
+ 
+ api in container
+ 
+ docker run --rm it -v ${PWD}:C:\api microsoft/aspnetcore:2
+ dotnet publish
+ dotnet <dll path>
+ 
+ Diff between linux and windows container?
+ Filesystem path is different
+ Multi-arch lookup 
+ linux -tag-jessie
+ windows - tag-nanoserver
+ 
+ docker run --rm weshigbee/manifest-tool inspect microsoft/dotnet:2-runtime
+ 
+ which OS base image 
+	windows vs linux
+	runtime vs sdk
+	prod vs dev
+	runtime-deps too
+	runtime version
+	sdk version
+	
+	github/dotnet/dotnet-docker
+	
+docker file
+
+FROM microsoft:aspnetcore:2
+
+WORKDIR /app
+COPY bin/DEBuG/netvoreapp2.0/publish .
+
+ENTRYPOINT ["dotnet", "api.dll"]
+
+-save file
+docker build -t aspnetcore\generator .
+
+.dockerignorefile
+*
+!bin/Debug/netcoreapp2.0/publish
+
+
+-----------
+docker run --rm -it -p 8080:80 --entrypoint bash <image name>
+ls -al
+docker build -t aspnetcore/generator --rm=false --no-cache
+
+-----------
+docker events --format "{{json .}}" | jq
+1) container create
+2) network connect
+3) container start
+
+FROM microsoft/aspnetcore-build:2
+WORKDIR /api
+COPY . .
+
+RUN dotnet restore
+RUN dotnet publish -o /publish
+WORKDIR /publish
+
+ENTRYPOINT ["dotnet","/publish/api.dll"]
+
+.dockerignore
+/bin
+/obj
+
+---------------------
+docker runtime dotnet core
+
+FROM microsoft/aspnetcore-build:2 as build-env
+WORKDIR /api
+COPY api.csproj .
+
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -o /publish
+
+#runtime image stage
+FROM microsoft/aspnetcore-build:2
+
+WORKDIR /publish
+COPY --from=build-env /publish .
+ENTRYPOINT ["dotnet","/publish/api.dll"]
+
+------------docker compose .yaml  (docker-compose up -d)
+version: '3.1'
+services:
+	generator:
+		build: 
+			context: .
+		image:aspnetcore/generator:multi
+		ports:
+			- "8080:80"
+	mail:
+		image: mailhog/mailhog
+		ports:
+		  - "8025:8025"
+		  - "1025:1025"
+
+docker-compose logs -f
+docker ps
+
+ 
+ 
+ 
