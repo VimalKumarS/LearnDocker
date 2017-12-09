@@ -1,0 +1,13 @@
+Hyperledger 
+
+- Iroha (c++ / mobile library)
+	YAC consensus algorithm
+
+Hyperledger Sawtooth is a blockchain framework with potential in IoT, manufacturing, finance, and enterprise. Hyperledger Sawtooth supports diverse requirements, including both permissioned and permissionless deployments, and a pluggable consensus algorithm. This framework also provides a revolutionary consensus algorithm, Proof of Elapsed Time (PoET), that allows for versatility and scalability suited for a variety of solutions.
+
+Hyperledger Sawtooth supports many different infrastructural requirements, such as:
+
+Permissioned and permissionless infrastructure
+Modular blockchain architecture
+Scalability, which is good for larger blockchain networks due to higher throughput
+Many languages for transaction logic.
